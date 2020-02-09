@@ -3,6 +3,7 @@ let clients = [];
 
 io.on('connection', (client) => {
   let randomNumber = Math.random() * 1000 | 0;
+  let userName;
   console.log('New client connected: ',randomNumber);
 
   client.on('subscribeToTimer', (interval) => {
@@ -12,9 +13,14 @@ io.on('connection', (client) => {
     }, interval);
   });
 
+  client.on('authenticateUser', (user) => {
+    console.log('User: ', user);
+    userName = user;
+  });
+
   client.on('sendMessage', (message) => {
     console.log(randomNumber, 'client sent msg: ', message);
-    client.broadcast.emit('newMessage', message);
+    client.broadcast.emit('newMessage', {user: userName, message: message});
   });
 
   client.on('disconnect', () => {
