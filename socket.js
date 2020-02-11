@@ -19,7 +19,7 @@ exports = module.exports = function (io) {
 
     client.on('sendMessage', (message) => {
       console.log(randomNumber, 'client sent msg: ', message);
-      client.broadcast.emit('newMessage', {user: userName, message: message});
+      client.broadcast.emit('newMessage', message);
     });
 
     client.on('disconnect', () => {
