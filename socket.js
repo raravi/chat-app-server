@@ -1,29 +1,52 @@
-exports = module.exports = function (io) {
+// Load User model
+const Message = require("./models/Message");
+
+exports = module.exports = function(io) {
   // Set socket.io listeners.
-  io.on('connection', (client) => {
-    let randomNumber = Math.random() * 1000 | 0;
-    let userName;
-    console.log('New client connected: ',randomNumber);
+  io.on("connection", client => {
+    let userOfSession;
+    console.log("New client connected: ", client.id);
 
-    client.on('subscribeToTimer', (interval) => {
-      console.log(randomNumber, ' client is subscribing to timer with interval ', interval);
-      setInterval(() => {
-        client.emit('timer', new Date());
-      }, interval);
+    client.on("authenticateUser", user => {
+      console.log("User: ", user);
+      userOfSession = user;
+      Message.find({}, {}, { sort: { _id: 1 }, limit: 50 }).then(docs => {
+        let messages = [];
+        docs.forEach(doc =>
+          messages.push({
+            user: { id: doc.userid, name: doc.username },
+            message: doc.message,
+            date: doc.date
+          })
+        );
+        client.emit("getOldMessages", messages);
+      });
     });
 
-    client.on('authenticateUser', (user) => {
-      console.log('User: ', user);
-      userName = user;
+    client.on("sendMessage", message => {
+      console.log(userOfSession, "client sent msg: ", message);
+      if (
+        userOfSession &&
+        message.user.id === userOfSession.id &&
+        message.user.name === userOfSession.name
+      ) {
+        const newMessage = new Message({
+          userid: message.user.id,
+          username: message.user.name,
+          message: message.message
+        });
+        newMessage
+          .save()
+          .then(() => console.log("Message added to DB!"))
+          .catch(err => console.log(err));
+        client.broadcast.emit("newMessage", message);
+      } else {
+        client.disconnect(true);
+      }
     });
 
-    client.on('sendMessage', (message) => {
-      console.log(randomNumber, 'client sent msg: ', message);
-      client.broadcast.emit('newMessage', message);
-    });
-
-    client.on('disconnect', () => {
-      console.log(randomNumber, ' Client disconnected');
+    client.on("disconnect", () => {
+      console.log(userOfSession, " Client disconnected");
     });
   });
 };
