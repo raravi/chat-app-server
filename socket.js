@@ -5,10 +5,8 @@ exports = module.exports = function(io) {
   // Set socket.io listeners.
   io.on("connection", client => {
     let userOfSession;
-    console.log("New client connected: ", client.id);
 
     client.on("authenticateUser", user => {
-      console.log("User: ", user);
       userOfSession = user;
       Message.find({}, {}, { sort: { _id: 1 }, limit: 50 }).then(docs => {
         let messages = [];
@@ -24,7 +22,6 @@ exports = module.exports = function(io) {
     });
 
     client.on("sendMessage", message => {
-      console.log(userOfSession, "client sent msg: ", message);
       if (
         userOfSession &&
         message.user.id === userOfSession.id &&
@@ -43,10 +40,6 @@ exports = module.exports = function(io) {
       } else {
         client.disconnect(true);
       }
-    });
-
-    client.on("disconnect", () => {
-      console.log(userOfSession, " Client disconnected");
     });
   });
 };

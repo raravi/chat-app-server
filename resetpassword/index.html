@@ -282,8 +282,6 @@
         })
         .then(response => response.json())
         .then(text => {
-          console.log("Success!");
-          console.log(text);
           if (text.resetcode) {
             resetCodeError.innerHTML = text.resetcode;
           }

@@ -16,7 +16,6 @@ const User = require("../../models/User");
 // @desc Register user
 // @access Public
 router.post("/register", (req, res) => {
-  console.log("In Register");
   // Form validation
   const { errors, isValid } = validateRegisterInput(req.body);
   // Check validation
@@ -40,7 +39,7 @@ router.post("/register", (req, res) => {
           newUser.password = hash;
           newUser
             .save()
-            .then(user => res.json(user))
+            .then(user => res.json({createduser: "New user registered successfully!"}))
             .catch(err => console.log(err));
         });
       });
@@ -52,7 +51,6 @@ router.post("/register", (req, res) => {
 // @desc Login user and return JWT token
 // @access Public
 router.post("/login", (req, res) => {
-  console.log('In Login');
   // Form validation
   const { errors, isValid } = validateLoginInput(req.body);
   // Check validation
@@ -143,13 +141,13 @@ router.post("/forgotpassword", (req, res) => {
           + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
       };
 
-      console.log('sending mail');
+      console.log('sending email...');
 
       transporter.sendMail(mailOptions, (err, response) => {
         if (err) {
           console.error('there was an error: ', err);
         } else {
-          console.log('here is the res: ', response);
+          console.log('here is the response: ', response);
           res.status(200).json({emailsent: 'The reset email has been sent, please check your inbox!'});
         }
       });
@@ -183,9 +181,6 @@ router.post("/resetpassword", (req, res) => {
       return res.status(400).json({ resetcode: "Reset code has expired" });
     }
 
-    console.log("Reset code is valid");
-    console.log(user);
-
     bcrypt.genSalt(12, (err, salt) => {
       bcrypt.hash(newPassword, salt, (err, hash) => {
         if (err) throw err;
@@ -193,13 +188,8 @@ router.post("/resetpassword", (req, res) => {
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
 
-        console.log("About to save");
-        console.log(user);
-
         user.save()
           .then(user => {
-            console.log("Saved!");
-            console.log(user);
             return res.json({success: "Password changed successfully!"});
           })
           .catch(err => console.log(err));
