@@ -1,6 +1,7 @@
 const passport = require("passport");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const rateLimit = require("express-rate-limit");
 const socket = require("./socket");
 const cors = require('cors');
 const path = require('path');
@@ -13,6 +14,14 @@ const db = require("./config/keys").mongoURI;
 
 // Enable CORS
 app.use(cors());
+
+// Rate Limiter Middleware
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+//  apply to all requests
+app.use(limiter);
 
 // Bodyparser middleware
 app.use(bodyParser.urlencoded({extended: false}));
