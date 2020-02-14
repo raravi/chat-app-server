@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>texter</title>
+    <link href="https://fonts.googleapis.com/css?family=Kelly+Slab|Roboto+Condensed:300,400,700|Source+Sans+Pro:300,400,600|Titillium+Web:300,400,600,700,900&display=swap" rel="stylesheet">
+    <style media="screen">
+
+      :root {
+        --color-grey: hsl(213, 30%, 60%);
+        --color-grey-lighter: hsl(213, 30%, 72%);
+        --color-grey-lighter2: hsl(213, 30%, 82%);
+        --color-grey-light: hsl(213, 30%, 92%);
+        --color-blue: hsl(190, 70%, 85%);
+        --color-blue-dark: hsl(190, 70%, 63%);
+        --color-blue-grey: hsl(208, 23%, 33%);
+        --color-blue-grey-light: hsl(208, 23%, 40%);
+        --color-georgia-peach: hsl(0, 95%, 71%);
+        --color-background: hsl(0, 0%, 94%);
+        --color-login: hsl(51, 84%, 98%);
+        --color-green: hsl(167, 36%, 51%);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 16px;
+        line-height: 1.4em;
+        font-weight: 300;
+        background-color: var(--color-background);
+      }
+
+      :focus {
+        outline: 0;
+      }
+
+      .container {
+        max-width: 700px;
+        min-width: 270px;
+        margin: 0 auto;
+        padding: 0 10px;
+      }
+
+      .header {
+        padding: 50px 0;
+        text-align: center;
+        color: var(--color-blue-dark);
+        border-bottom: 2px solid var(--color-grey-light);
+      }
+
+      .header__title {
+        padding-left: 40px;
+        font-family: 'Kelly Slab', sans-serif;
+        font-size: 52px;
+        letter-spacing: 0.2em;
+        -webkit-text-rendering: optimizeLegibility;
+      	-moz-text-rendering: optimizeLegibility;
+      	text-rendering: optimizeLegibility;
+      }
+
+      .reset {
+        position: relative;
+        width: 100%;
+        max-width: 350px;
+        margin: 20px auto 0;
+        padding: 0;
+      }
+
+      .reset__header {
+        font-family: 'Titillium Web', sans-serif;
+        font-size: 28px;
+        font-weight: 300;
+        letter-spacing: 0.04em;
+        color: var(--color-blue-grey);
+        text-align: center;
+        padding: 40px 0 10px;
+        margin: 0 15px 20px;
+        border-bottom: 4px solid var(--color-background);
+      }
+
+      .reset__text {
+        font-family: 'Titillium Web', sans-serif;
+        font-weight: 400;
+        font-size: 16px;
+        letter-spacing: 0.04em;
+        color: var(--color-grey);
+      }
+
+      .reset__code,
+      .reset__password,
+      .reset__password2 {
+        font-size: 16px;
+        line-height: 1.75;
+        margin-top: 46px;
+        padding: 0 8px;
+        width: 100%;
+        border: none;
+        border-bottom: 2px solid var(--color-blue-dark);
+        color: var(--color-grey);
+        background-color: var(--color-background);
+      }
+
+      .reset__code-error,
+      .reset__password-error,
+      .reset__password2-error {
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        line-height: 1.75;
+        width: 100%;
+        color: var(--color-georgia-peach);
+      }
+
+      .reset__code-success {
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
+        width: 100%;
+        color: var(--color-green);
+      }
+
+      .reset__submit {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 16px;
+        padding: 12px 45px;
+        margin-top: 60px;
+        margin-bottom: 20px;
+        border-radius: 25px;
+        border-color: var(--color-blue-dark);
+        background-color: var(--color-blue-dark);
+        color: var(--color-login);
+        cursor: pointer;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1),
+                    0 10px 20px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      .reset__submit:hover {
+        transform: translate(-50%, -1%);
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15),
+                    0 4px 8px 0 rgba(0, 0, 0, 0.25);
+      }
+
+      .reset__code::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__code::-moz-placeholder { /* Firefox 19+ */
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__code:-ms-input-placeholder { /* IE 10+ */
+        font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__code::input-placeholder {
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__code::placeholder {
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__password::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__password::-moz-placeholder { /* Firefox 19+ */
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__password:-ms-input-placeholder { /* IE 10+ */
+        font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__password::input-placeholder {
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__password::placeholder {
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__password2::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__password2::-moz-placeholder { /* Firefox 19+ */
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__password2:-ms-input-placeholder { /* IE 10+ */
+        font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__password2::input-placeholder {
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .reset__password2::placeholder {
+      	font-style: italic;
+      	font-weight: 300;
+      	color: var(--color-grey-lighter);
+      }
+
+      .footer {
+        color: var(--color-grey);
+        font-size: 16px;
+        letter-spacing: 0.02em;
+        margin: 80px;
+        text-align: center;
+      }
+
+      .footer a:visited {
+        color: var(--color-blue-dark);
+      }
+    </style>
+    <script type="text/javascript">
+
+      function sendCode() {
+        const resetCode = document.querySelector('.reset__code');
+        const resetPassword = document.querySelector('.reset__password');
+        const resetPassword2 = document.querySelector('.reset__password2');
+
+        const resetCodeError = document.querySelector('.reset__code-error');
+        const resetPasswordError = document.querySelector('.reset__password-error');
+        const resetPassword2Error = document.querySelector('.reset__password2-error');
+        const resetCodeSuccess = document.querySelector('.reset__code-success');
+
+        resetCodeError.innerHTML = '';
+        resetPasswordError.innerHTML = '';
+        resetPassword2Error.innerHTML = '';
+        resetCodeSuccess.innerHTML = '';
+
+        fetch("http://localhost:8000/api/users/resetpassword", {
+          method: "post",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+
+          //make sure to serialize your JSON body
+          body: JSON.stringify({
+            resetcode: resetCode.value,
+            password: resetPassword.value,
+            password2: resetPassword2.value
+          })
+        })
+        .then(response => response.json())
+        .then(text => {
+          console.log("Success!");
+          console.log(text);
+          if (text.resetcode) {
+            resetCodeError.innerHTML = text.resetcode;
+          }
+          if (text.password) {
+            resetPasswordError.innerHTML = text.password;
+          }
+          if (text.password2) {
+            resetPassword2Error.innerHTML = text.password2;
+          }
+          if (text.success) {
+            resetCodeSuccess.innerHTML = text.success;
+            resetCode.value = '';
+            resetPassword.value = '';
+            resetPassword2.value = '';
+          }
+        })
+        .catch(e => {
+          console.error('Error!');
+          console.error(e);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="header__title">texter</h1>
+    </header>
+    <section class="reset">
+      <h2 class="reset__header">Reset Password</h2>
+      <p class="reset__text">Please enter the details below to reset your account.</p>
+      <input type="text" name="code" class="reset__code" placeholder="Reset code" />
+      <label class="reset__code-error"></label>
+      <input type="password" name="password" class="reset__password" placeholder="New password"/>
+      <label class="reset__password-error"></label>
+      <input type="password" name="password2" class="reset__password2" placeholder="Confirm password"/>
+      <label class="reset__password2-error"></label>
+      <label class="reset__code-success"></label><br />
+      <button type="button" class="reset__submit" onclick="sendCode()">Submit</button>
+    </section>
+    <footer class="footer">
+      <p>&#169; 2020 Amith Raravi - source code on <a href="https://github.com/raravi/chat-app-client">Github</a></p>
+    </footer>
+  </body>
+</html>
