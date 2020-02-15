@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const crypto = require('crypto');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -116,7 +117,7 @@ router.post("/forgotpassword", (req, res) => {
       return res.status(404).json({ email: "Email not found" });
     }
 
-    const randomNumber = Math.floor(100000 + Math.random() * 900000);
+    const randomNumber = crypto.randomBytes(16).toString('hex');
     user.resetPasswordToken = randomNumber.toString();
     user.resetPasswordExpires = new Date(Date.now() + 3600000);
 

@@ -20,9 +20,6 @@ module.exports = function validateResetPasswordInput(data) {
   // Reset Code checks
   if (Validator.isEmpty(data.resetcode)) {
     errors.resetcode = "Reset code is required";
-  } else if ( !Validator.isNumeric(data.resetcode, {no_symbols: false}) &&
-              data.resetcode.length !== 6) {
-    errors.email = "Reset Code is in invalid format";
   }
 
   // Password checks
