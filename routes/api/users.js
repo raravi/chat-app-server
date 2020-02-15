@@ -117,8 +117,8 @@ router.post("/forgotpassword", (req, res) => {
       return res.status(404).json({ email: "Email not found" });
     }
 
-    const randomNumber = crypto.randomBytes(16).toString('hex');
-    user.resetPasswordToken = randomNumber.toString();
+    const randomString = crypto.randomBytes(16).toString('hex');
+    user.resetPasswordToken = randomString.toString();
     user.resetPasswordExpires = new Date(Date.now() + 3600000);
 
     bcrypt.genSalt(12, (err, salt) => {
@@ -143,7 +143,7 @@ router.post("/forgotpassword", (req, res) => {
               'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n'
               + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
               + `http://localhost:8000/resetpassword\n\n`
-              + `Reset Code: ${randomNumber}\n\n`
+              + `Reset Code: ${randomString}\n\n`
               + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
           };
 
