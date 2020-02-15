@@ -120,36 +120,43 @@ router.post("/forgotpassword", (req, res) => {
     user.resetPasswordToken = randomNumber.toString();
     user.resetPasswordExpires = new Date(Date.now() + 3600000);
 
-    user.save().then((user) => {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: keys.email,
-          pass: keys.password,
-        },
-      });
+    bcrypt.genSalt(12, (err, salt) => {
+      bcrypt.hash(user.resetPasswordToken, salt, (err, hash) => {
+        if (err) throw err;
+        user.resetPasswordToken = hash;
 
-      const mailOptions = {
-        from: 'texter-app@gmail.com',
-        to: `${user.email}`,
-        subject: 'Link To Reset Password',
-        text:
-          'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n'
-          + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
-          + `http://localhost:8000/resetpassword\n\n`
-          + `Reset Code: ${randomNumber}\n\n`
-          + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
-      };
+        user.save().then((user) => {
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: keys.email,
+              pass: keys.password,
+            },
+          });
 
-      console.log('sending email...');
+          const mailOptions = {
+            from: 'texter-app@gmail.com',
+            to: `${user.email}`,
+            subject: 'Link To Reset Password',
+            text:
+              'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n'
+              + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
+              + `http://localhost:8000/resetpassword\n\n`
+              + `Reset Code: ${randomNumber}\n\n`
+              + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+          };
 
-      transporter.sendMail(mailOptions, (err, response) => {
-        if (err) {
-          console.error('there was an error: ', err);
-        } else {
-          console.log('here is the response: ', response);
-          res.status(200).json({emailsent: 'The reset email has been sent, please check your inbox!'});
-        }
+          console.log('sending email...');
+
+          transporter.sendMail(mailOptions, (err, response) => {
+            if (err) {
+              console.error('there was an error: ', err);
+            } else {
+              console.log('here is the response: ', response);
+              res.status(200).json({emailsent: 'The reset email has been sent, please check your inbox!'});
+            }
+          });
+        });
       });
     });
   });
@@ -165,36 +172,49 @@ router.post("/resetpassword", (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
+  const email = req.body.email;
   const resetCode = req.body.resetcode;
   const newPassword = req.body.password;
   // Find user by email
-  User.findOne({ resetPasswordToken: resetCode }).then(user => {
+  User.findOne({ email: email }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ resetcode: "Reset code not found" });
-    }
-    if (user.resetPasswordExpires < Date.now()) {
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpires = undefined;
-      user.save();
-
-      return res.status(400).json({ resetcode: "Reset code has expired" });
+      return res.status(404).json({ email: "Email not found" });
     }
 
-    bcrypt.genSalt(12, (err, salt) => {
-      bcrypt.hash(newPassword, salt, (err, hash) => {
-        if (err) throw err;
-        user.password = hash;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
+    // Check RESET code
+    bcrypt.compare(resetCode, user.resetPasswordToken).then(isMatch => {
+      if (isMatch) {
+        // User matched
+        if (user.resetPasswordExpires < Date.now()) {
+          user.resetPasswordToken = undefined;
+          user.resetPasswordExpires = undefined;
+          user.save();
 
-        user.save()
-          .then(user => {
-            return res.json({success: "Password changed successfully!"});
-          })
-          .catch(err => console.log(err));
-      });
+          return res.status(400).json({ resetcode: "Reset code has expired" });
+        }
+
+        bcrypt.genSalt(12, (err, salt) => {
+          bcrypt.hash(newPassword, salt, (err, hash) => {
+            if (err) throw err;
+            user.password = hash;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpires = undefined;
+
+            user.save()
+              .then(user => {
+                return res.json({success: "Password changed successfully!"});
+              })
+              .catch(err => console.log(err));
+          });
+        });
+      } else {
+        return res
+          .status(400)
+          .json({ resetcode: "Reset code is invalid" });
+      }
     });
+
   });
 });
 

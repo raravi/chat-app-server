@@ -90,6 +90,7 @@
         color: var(--color-grey);
       }
 
+      .reset__email,
       .reset__code,
       .reset__password,
       .reset__password2 {
@@ -104,6 +105,7 @@
         background-color: var(--color-background);
       }
 
+      .reset__email-error,
       .reset__code-error,
       .reset__password-error,
       .reset__password2-error {
@@ -145,6 +147,36 @@
         transform: translate(-50%, -1%);
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15),
                     0 4px 8px 0 rgba(0, 0, 0, 0.25);
+      }
+
+      .reset__email::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        font-style: italic;
+        font-weight: 300;
+        color: var(--color-grey-lighter);
+      }
+
+      .reset__email::-moz-placeholder { /* Firefox 19+ */
+        font-style: italic;
+        font-weight: 300;
+        color: var(--color-grey-lighter);
+      }
+
+      .reset__email:-ms-input-placeholder { /* IE 10+ */
+        font-style: italic;
+        font-weight: 300;
+        color: var(--color-grey-lighter);
+      }
+
+      .reset__email::input-placeholder {
+        font-style: italic;
+        font-weight: 300;
+        color: var(--color-grey-lighter);
+      }
+
+      .reset__email::placeholder {
+        font-style: italic;
+        font-weight: 300;
+        color: var(--color-grey-lighter);
       }
 
       .reset__code::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -252,15 +284,18 @@
     <script type="text/javascript">
 
       function sendCode() {
+        const resetEmail = document.querySelector('.reset__email');
         const resetCode = document.querySelector('.reset__code');
         const resetPassword = document.querySelector('.reset__password');
         const resetPassword2 = document.querySelector('.reset__password2');
 
+        const resetEmailError = document.querySelector('.reset__email-error');
         const resetCodeError = document.querySelector('.reset__code-error');
         const resetPasswordError = document.querySelector('.reset__password-error');
         const resetPassword2Error = document.querySelector('.reset__password2-error');
         const resetCodeSuccess = document.querySelector('.reset__code-success');
 
+        resetEmailError.innerHTML = '';
         resetCodeError.innerHTML = '';
         resetPasswordError.innerHTML = '';
         resetPassword2Error.innerHTML = '';
@@ -275,6 +310,7 @@
 
           //make sure to serialize your JSON body
           body: JSON.stringify({
+            email: resetEmail.value,
             resetcode: resetCode.value,
             password: resetPassword.value,
             password2: resetPassword2.value
@@ -282,6 +318,9 @@
         })
         .then(response => response.json())
         .then(text => {
+          if (text.email) {
+            resetEmailError.innerHTML = text.email;
+          }
           if (text.resetcode) {
             resetCodeError.innerHTML = text.resetcode;
           }
@@ -293,6 +332,7 @@
           }
           if (text.success) {
             resetCodeSuccess.innerHTML = text.success;
+            resetEmail.value = '';
             resetCode.value = '';
             resetPassword.value = '';
             resetPassword2.value = '';
@@ -312,6 +352,8 @@
     <section class="reset">
       <h2 class="reset__header">Reset Password</h2>
       <p class="reset__text">Please enter the details below to reset your account.</p>
+      <input type="text" name="email" class="reset__email" placeholder="Registered email" />
+      <label class="reset__email-error"></label>
       <input type="text" name="code" class="reset__code" placeholder="Reset code" />
       <label class="reset__code-error"></label>
       <input type="password" name="password" class="reset__password" placeholder="New password"/>
