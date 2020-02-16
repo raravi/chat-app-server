@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-// Create Schema
+
+/**
+ * Message Schema for MongoDB
+ */
 const MessageSchema = new Schema({
   userid: {
     type: String,

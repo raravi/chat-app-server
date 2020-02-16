@@ -1,6 +1,12 @@
 const Validator = require("validator");
 const isEmpty = require("is-empty");
 
+/**
+ * Validations for the fields in /resetpassword API endpoint:
+ * 1. email
+ * 2. reset token
+ * 3. password
+ */
 module.exports = function validateResetPasswordInput(data) {
   let errors = {};
 

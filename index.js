@@ -12,6 +12,16 @@ const port = 8000;
 const users = require("./routes/api/users");
 const db = require("./config/keys").mongoURI;
 
+/**
+ * Index.js does the following:
+ * 1. Sets up middleware for Rate Limiting, Passport (used
+ * for authentication), Body Parser (used for JSON).
+ * 2. Connects to the MongoDB for CRUD operations.
+ * 3. Express server to serve API endpoints & /resetpassword webpage
+ * 4. Connects socket.io to Express server to enable realtime
+ * bidirectional communication for chat messaging functionality.
+ */
+
 // Enable CORS
 app.use(cors());
 
@@ -20,7 +30,7 @@ const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100 // limit each IP to 100 requests per windowMs
 });
-//  apply to all requests
+//  apply limiter to all requests
 app.use(limiter);
 
 // Bodyparser middleware

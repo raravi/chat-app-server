@@ -1,3 +1,13 @@
+<!--  The resetpassword webpage is sent as a response for
+      click in the Reset emails to the user. This webpage
+      feels the same as the 'texter' website, as the user
+      shouldn't be doubting that this webpage is part of
+      the 'texter' website!
+      Because this webpage is sent as a response by the
+      express backend, sending separate Javascript / CSS
+      files would lead to more code on the backend. To
+      avoid it, Javascript / CSS has been inlined below.
+-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -283,6 +293,10 @@
     </style>
     <script type="text/javascript">
 
+      /**
+       * Send the Reset Token to the backend for processing,
+       * along with User details for password reset.
+       */
       function sendCode() {
         const resetEmail = document.querySelector('.reset__email');
         const resetCode = document.querySelector('.reset__code');
@@ -308,7 +322,6 @@
             'Content-Type': 'application/json'
           },
 
-          //make sure to serialize your JSON body
           body: JSON.stringify({
             email: resetEmail.value,
             resetcode: resetCode.value,

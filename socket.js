@@ -1,11 +1,17 @@
-// Load User model
+/**
+ * Load User model
+ */
 const Message = require("./models/Message");
 
+/**
+ * Set up socket.io to handle connections from clients
+ */
 exports = module.exports = function(io) {
   // Set socket.io listeners.
   io.on("connection", client => {
     let userOfSession;
 
+    // Authenticate User on login, send chat history
     client.on("authenticateUser", user => {
       userOfSession = user;
       Message.find({}, {}, { sort: { _id: 1 }, limit: 50 }).then(docs => {
@@ -21,6 +27,8 @@ exports = module.exports = function(io) {
       });
     });
 
+    // On receiving message from user, authenticate user.
+    // Then save message in DB and forward to other logged-in users. 
     client.on("sendMessage", message => {
       if (
         userOfSession &&

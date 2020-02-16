@@ -1,6 +1,11 @@
 const Validator = require("validator");
 const isEmpty = require("is-empty");
 
+/**
+ * Validations for the fields in /login API endpoint:
+ * 1. email
+ * 2. password
+ */
 module.exports = function validateLoginInput(data) {
   let errors = {};
 

@@ -1,6 +1,12 @@
 const Validator = require("validator");
 const isEmpty = require("is-empty");
 
+/**
+ * Validations for the fields in /register API endpoint:
+ * 1. name
+ * 2. email
+ * 3. password
+ */
 module.exports = function validateRegisterInput(data) {
   let errors = {};
 
@@ -35,7 +41,7 @@ module.exports = function validateRegisterInput(data) {
   if (!Validator.equals(data.password, data.password2)) {
     errors.password2 = "Passwords must match";
   }
-  
+
   return {
     errors,
     isValid: isEmpty(errors)

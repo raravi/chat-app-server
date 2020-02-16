@@ -5,17 +5,25 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const keys = require("../../config/keys");
-// Load input validation
+
+/**
+ * Load input validation
+ */
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateForgotPasswordInput = require("../../validation/forgotpassword");
 const validateResetPasswordInput = require("../../validation/resetpassword");
-// Load User model
+
+/**
+ * Load User model
+ */
 const User = require("../../models/User");
 
-// @route POST api/users/register
-// @desc Register user
-// @access Public
+/**
+ * @route POST api/users/register
+ * @desc Register user
+ * @access Public
+ */
 router.post("/register", (req, res) => {
   // Form validation
   const { errors, isValid } = validateRegisterInput(req.body);
@@ -48,9 +56,11 @@ router.post("/register", (req, res) => {
   });
 });
 
-// @route POST api/users/login
-// @desc Login user and return JWT token
-// @access Public
+/**
+ * @route POST api/users/login
+ * @desc Login user and return JWT token
+ * @access Public
+ */
 router.post("/login", (req, res) => {
   // Form validation
   const { errors, isValid } = validateLoginInput(req.body);
@@ -99,9 +109,11 @@ router.post("/login", (req, res) => {
   });
 });
 
-// @route FORGOTPASSWORD api/users/forgotpassword
-// @desc Get valid email from user and send a RESET mail to the registered email.
-// @access Public
+/**
+ * @route FORGOTPASSWORD api/users/forgotpassword
+ * @desc Get valid email from user and send a RESET mail to the registered email.
+ * @access Public
+ */
 router.post("/forgotpassword", (req, res) => {
   // Form validation
   const { errors, isValid } = validateForgotPasswordInput(req.body);
@@ -117,15 +129,18 @@ router.post("/forgotpassword", (req, res) => {
       return res.status(404).json({ email: "Email not found" });
     }
 
+    // Generate random string
     const randomString = crypto.randomBytes(16).toString('hex');
     user.resetPasswordToken = randomString.toString();
     user.resetPasswordExpires = new Date(Date.now() + 3600000);
 
+    // hash the Reset token
     bcrypt.genSalt(12, (err, salt) => {
       bcrypt.hash(user.resetPasswordToken, salt, (err, hash) => {
         if (err) throw err;
         user.resetPasswordToken = hash;
 
+        // Save the user to DB
         user.save().then((user) => {
           const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -149,6 +164,7 @@ router.post("/forgotpassword", (req, res) => {
 
           console.log('sending email...');
 
+          // Send mail
           transporter.sendMail(mailOptions, (err, response) => {
             if (err) {
               console.error('there was an error: ', err);
@@ -163,9 +179,11 @@ router.post("/forgotpassword", (req, res) => {
   });
 });
 
-// @route RESETPASSWORD api/users/resetpassword
-// @desc Get valid RESET code, new password from user and update the password in DB.
-// @access Public
+/**
+ * @route RESETPASSWORD api/users/resetpassword
+ * @desc Get valid RESET code, new password from user and update the password in DB.
+ * @access Public
+ */
 router.post("/resetpassword", (req, res) => {
   // Form validation
   const { errors, isValid } = validateResetPasswordInput(req.body);
@@ -186,7 +204,7 @@ router.post("/resetpassword", (req, res) => {
     // Check RESET code
     bcrypt.compare(resetCode, user.resetPasswordToken).then(isMatch => {
       if (isMatch) {
-        // User matched
+        // Token matched
         if (user.resetPasswordExpires < Date.now()) {
           user.resetPasswordToken = undefined;
           user.resetPasswordExpires = undefined;
@@ -195,6 +213,7 @@ router.post("/resetpassword", (req, res) => {
           return res.status(400).json({ resetcode: "Reset code has expired" });
         }
 
+        // hash the new password
         bcrypt.genSalt(12, (err, salt) => {
           bcrypt.hash(newPassword, salt, (err, hash) => {
             if (err) throw err;
@@ -202,6 +221,7 @@ router.post("/resetpassword", (req, res) => {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpires = undefined;
 
+            // save the user to DB
             user.save()
               .then(user => {
                 return res.json({success: "Password changed successfully!"});

@@ -1,6 +1,10 @@
 const Validator = require("validator");
 const isEmpty = require("is-empty");
 
+/**
+ * Validations for the fields in /forgotpassword API endpoint:
+ * 1. email
+ */
 module.exports = function validateForgotPasswordInput(data) {
   let errors = {};
 
