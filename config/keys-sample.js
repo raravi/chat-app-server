@@ -4,6 +4,8 @@
  *
  * Important: If you're commiting to github, please make sure
  * you DO NOT upload this file after entering your details here!!!
+ * Put it in the .gitignore file, commit it.
+ * Then make the above mentioned changes to this file and commit it.
  */
 module.exports = {
   mongoURI: "__YOUR_MONGODB_URI_HERE__",

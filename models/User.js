@@ -28,4 +28,8 @@ const UserSchema = new Schema({
     type: Date
   }
 });
+
+/**
+ * This schema targets the 'users' collection in MongoDB.
+ */
 module.exports = User = mongoose.model("users", UserSchema);

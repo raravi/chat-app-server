@@ -22,4 +22,8 @@ const MessageSchema = new Schema({
     default: Date.now
   }
 });
+
+/**
+ * This schema targets the 'messages' collection in MongoDB.
+ */
 module.exports = Message = mongoose.model("messages", MessageSchema);
