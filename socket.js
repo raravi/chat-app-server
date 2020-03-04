@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const keys = require("./config/keys");
 /**
- * Load User model
+ * Load Message model
  */
 const Message = require("./models/Message");
 
