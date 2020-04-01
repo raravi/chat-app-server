@@ -1,7 +1,7 @@
 {
   "name": "chat-app-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "A chat app server written in Javascript",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
