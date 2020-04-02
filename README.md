@@ -2,6 +2,8 @@
 
 A chat app server written in Javascript!
 
+![license](https://img.shields.io/github/license/raravi/chat-app-server)&nbsp;&nbsp;![version](https://img.shields.io/github/package-json/v/raravi/chat-app-server)&nbsp;&nbsp;![dependencies](https://img.shields.io/depfu/raravi/chat-app-server)&nbsp;&nbsp;![last-commit](https://img.shields.io/github/last-commit/raravi/chat-app-server)
+
 The server runs in **node.js** using [Express](https://expressjs.com/) to setup a server to listen to requests to API endpoints and `/resetpassword` route. It uses [socket.io](https://socket.io/) to setup realtime communication for chat messaging.
 
 ## Server Features
