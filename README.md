@@ -8,7 +8,7 @@ The server runs in **node.js** using [Express](https://expressjs.com/) to setup 
 
 ## Server Features
 
-1. Sets up middleware for Rate Limiting, [Passport](http://www.passportjs.org/) (used for authentication), Body Parser (used for JSON).
+1. Sets up middleware for Rate Limiting & Body Parser (used for JSON).
 2. Connects to the MongoDB using [Mongoose](https://mongoosejs.com/docs/guide.html) for CRUD operations.
 3. **Express** server to serve API endpoints & `/resetpassword` webpage
 4. Connects **socket.io** to **Express** server to enable realtime bidirectional communication for chat messaging functionality.

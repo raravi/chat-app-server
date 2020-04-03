@@ -1,4 +1,3 @@
-const passport = require("passport");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const rateLimit = require("express-rate-limit");
@@ -14,8 +13,7 @@ const db = require("./config/keys").mongoURI;
 
 /**
  * Index.js does the following:
- * 1. Sets up middleware for Rate Limiting, Passport (used
- * for authentication), Body Parser (used for JSON).
+ * 1. Sets up middleware for Rate Limiting & Body Parser (used for JSON).
  * 2. Connects to the MongoDB for CRUD operations.
  * 3. Express server to serve API endpoints & /resetpassword webpage
  * 4. Connects socket.io to Express server to enable realtime
@@ -36,10 +34,6 @@ app.use(limiter);
 // Bodyparser middleware
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
-// Passport middleware
-app.use(passport.initialize());
-require("./config/passport")(passport);
 
 // Connect to MongoDB
 mongoose
