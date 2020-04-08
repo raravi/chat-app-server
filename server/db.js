@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 let db;
 if (!process.env.CI_ENVIRONMENT) {
   db = require("../config/keys").mongoURI;
+} else {
+  db = process.env.CI_ENVIRONMENT_MONGOURI;
 }
 
 // Connect to MongoDB
