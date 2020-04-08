@@ -1,5 +1,14 @@
+require('dotenv').config();
 const jwt = require("jsonwebtoken");
-const keys = require("./config/keys");
+
+let keys;
+if (!process.env.CI_ENVIRONMENT) {
+  keys = require("./config/keys");
+} else {
+  keys = {};
+  keys.secretOrKey = process.env.CI_ENVIRONMENT_SECRETORKEY;
+}
+
 /**
  * Load Message model
  */
