@@ -1,13 +1,9 @@
 require('dotenv').config();
 const jwt = require("jsonwebtoken");
 
-let keys;
-if (!process.env.CI_ENVIRONMENT) {
-  keys = require("./config/keys");
-} else {
-  keys = {};
-  keys.secretOrKey = process.env.CI_ENVIRONMENT_SECRETORKEY;
-}
+// Config from Environment variables
+let keys = {};
+keys.secretOrKey = process.env.CHATAPP_SECRETORKEY;
 
 /**
  * Load Message model
