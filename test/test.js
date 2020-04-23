@@ -782,7 +782,7 @@ describe('POST /resetpassword', function() {
 /**
  * Tests for the GET /RESETPASSWORD endpoint.
  */
-describe('GET /resetpassword', function() {
+describe.skip('GET /resetpassword', function() {
   it('success: responds with HTML', function(done) {
     chai.request(app)
       .get('/resetpassword')
