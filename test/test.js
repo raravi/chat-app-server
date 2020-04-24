@@ -651,6 +651,10 @@ describe('POST /resetpassword', function() {
   });
 
   it('error: reset code is invalid', function(done) {
+    const userFindOne = sinon.stub(User, 'findOne');
+    userFindOne.resolves(resetPasswordData.resolve);
+    const bcryptCompare = sinon.stub(bcrypt, 'compare');
+    bcryptCompare.resolves(false);
     resetPasswordData.json["resetcode"] = "8c4e65";
 
     chai.request(app)
@@ -662,6 +666,8 @@ describe('POST /resetpassword', function() {
         expect(response).to.have.status(400);
         expect(response).to.be.json;
         expect(response.body.resetcode).to.equal(validationData.resetCodeInvalid);
+        User.findOne.restore();
+        bcrypt.compare.restore();
         done();
       });
   });
