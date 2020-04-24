@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 // Config from Environment variables
 let keys = {};
 keys.secretOrKey = process.env.CHATAPP_SECRETORKEY;
+keys.clientUrl = process.env.CHATAPP_CLIENTURL;
 
 /**
  * Load Message model
@@ -17,7 +18,7 @@ exports = module.exports = function(io) {
   // Set socket.io listeners.
   io.on("connection", client => {
     let userOfSession;
-    if (client.handshake.headers.origin !== "http://localhost:3000") {
+    if (client.handshake.headers.origin !== keys.clientUrl) {
       client.disconnect(true);
     }
 

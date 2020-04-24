@@ -9,6 +9,7 @@ let keys = {};
 keys.secretOrKey = process.env.CHATAPP_SECRETORKEY;
 keys.email = process.env.CHATAPP_EMAIL;
 keys.password = process.env.CHATAPP_PASSWORD;
+keys.clientResetUrl = process.env.CHATAPP_CLIENTRESETURL;
 
 /**
  * Load input validation
@@ -171,7 +172,7 @@ const forgotPassword = (req, res) => {
             text:
               'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n'
               + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
-              + `http://localhost:3000/resetpassword\n\n`
+              + `${keys.clientResetUrl}\n\n`
               + `Reset Code: ${randomString}\n\n`
               + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
           };
