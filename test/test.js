@@ -1,11 +1,14 @@
+if (process.env.ENVIRONMENT != 'PROD') {
+  require('dotenv').config();
+}
 const app = require('../server');
 const mongoose = require("mongoose");
 const sinon = require('sinon');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 const jwtDecode = require('jwt-decode');
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 
 const expect = chai.expect;
 chai.use(chaiHttp);
@@ -13,7 +16,7 @@ chai.use(chaiHttp);
 /**
  * Load User / Session models
  */
-const User = require("../models/User");
+// const User = require("../models/User");
 
 /**
  * Stubs / Mocks
@@ -94,7 +97,7 @@ after(function() {
 /**
  * Tests for the REGISTER endpoint.
  */
-describe('POST /register', function() {
+describe.skip('POST /register', function() {
   beforeEach(function() {
     registerData.json = {
       "name": "Amith Raravi",
@@ -293,7 +296,7 @@ describe('POST /register', function() {
 /**
  * Tests for the LOGIN endpoint.
  */
-describe('POST /login', function() {
+describe.skip('POST /login', function() {
   beforeEach(function() {
     loginData.json = {
       "email": "amith.raravi@gmail.com",
@@ -404,7 +407,7 @@ describe('POST /login', function() {
 /**
  * Tests for the FORGOTPASSWORD endpoint.
  */
-describe('POST /forgotpassword', function() {
+describe.skip('POST /forgotpassword', function() {
   beforeEach(function() {
     forgotPasswordData.json = {
       "email": "amith.raravi@gmail.com"
@@ -531,7 +534,7 @@ describe('POST /forgotpassword', function() {
 /**
  * Tests for the RESETPASSWORD endpoint.
  */
-describe('POST /resetpassword', function() {
+describe.skip('POST /resetpassword', function() {
   beforeEach(function() {
     resetPasswordData.json = {
       "email": "amith.raravi@gmail.com",

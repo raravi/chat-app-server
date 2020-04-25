@@ -1,11 +1,8 @@
-const bodyParser = require("body-parser");
 const rateLimit = require("express-rate-limit");
 const cors = require('cors');
 const express = require('express');
 const app = express();
 const mongooseConnection = require('./db');
-
-const users = require("../routes/api/users");
 
 /**
  * Index.js does the following:
@@ -26,12 +23,5 @@ const limiter = rateLimit({
 });
 //  apply limiter to all requests
 app.use(limiter);
-
-// Bodyparser middleware
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-
-// Routes
-app.use("/api/users", users);
 
 module.exports = app;
