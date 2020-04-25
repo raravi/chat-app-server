@@ -4,6 +4,10 @@ const express = require('express');
 const app = express();
 const mongooseConnection = require('./db');
 
+// Config from Environment variables
+let keys = {};
+keys.clientUrl = process.env.CHATAPP_CLIENTURL;
+
 /**
  * Index.js does the following:
  * 1. Sets up middleware for Rate Limiting & Body Parser (used for JSON).
@@ -14,7 +18,10 @@ const mongooseConnection = require('./db');
  */
 
 // Enable CORS
-app.use(cors());
+app.use(cors({
+  origin:['http://localhost:3000', keys.clientUrl],
+  methods:['GET','POST'],
+}));
 
 // Rate Limiter Middleware
 const limiter = rateLimit({
