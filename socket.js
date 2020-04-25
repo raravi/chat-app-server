@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 
 // Config from Environment variables
 let keys = {};
-keys.secretOrKey = process.env.CHATAPP_SECRETORKEY;
-keys.clientUrl = process.env.CHATAPP_CLIENTURL;
+keys.secretOrKey = process.env.APP_SECRETORKEY;
+keys.clientUrl = process.env.APP_CLIENTURL;
 
 /**
  * Load Message model

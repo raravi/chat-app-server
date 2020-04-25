@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Config from Environment variables
-let db = process.env.CHATAPP_MONGOURI;
+let db = process.env.APP_DB;
 
 // Connect to MongoDB
 // mongoose

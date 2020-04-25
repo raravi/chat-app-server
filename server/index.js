@@ -6,7 +6,7 @@ const mongooseConnection = require('./db');
 
 // Config from Environment variables
 let keys = {};
-keys.clientUrl = process.env.CHATAPP_CLIENTURL;
+keys.clientUrl = process.env.APP_CLIENTURL;
 
 /**
  * Index.js does the following:
