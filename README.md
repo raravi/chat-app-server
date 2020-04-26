@@ -17,6 +17,7 @@ I've created a Free tier MongoDB account using [MongoDB Atlas](https://www.mongo
 
 ## API Endpoints
 
+The below endpoints are moved to the repo [chat-server-lambda](https://github.com/raravi/chat-server-lambda) as I've split it into AWS Lambda function!
 1. `/login`: For login of users.
 2. `/register`: To register new users.
 3. `/forgotpassword`: To send a reset mail to the registered email address of the user.
