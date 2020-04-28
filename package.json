@@ -2,6 +2,7 @@
   "name": "chat-app-server",
   "version": "3.0.0",
   "description": "A chat app server written in Javascript",
+  "repository": "https://github.com/raravi/chat-app-server.git",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
