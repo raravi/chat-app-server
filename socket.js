@@ -17,9 +17,6 @@ exports = module.exports = function(io) {
   // Set socket.io listeners.
   io.on("connection", client => {
     let userOfSession;
-    if (client.handshake.headers.origin !== keys.clientUrl) {
-      client.disconnect(true);
-    }
 
     // Authenticate User on login, send chat history
     client.on("authenticateUser", user => {
