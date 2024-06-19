@@ -19,7 +19,7 @@
     "express-rate-limit": "^6.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "6.7.0",
-    "socket.io": "^4.5.3"
+    "socket.io": "^4.7.5"
   },
   "devDependencies": {
     "chai": "^4.3.6",
